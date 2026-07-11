@@ -146,7 +146,9 @@ const GatheringPage = () => {
       <footer className="text-center py-6 border-t border-white/10">
         <p className="text-emerald-300">
           © ۱۴۰۵ تورترکیه | دورهمی‌ها را در
-          <a href="#" className="text-amber-400 hover:underline mx-1">اینستاگرام</a>
+         <a href="#instagram-section" className="text-amber-400 hover:underline mx-1">
+  اینستاگرام
+</a>
           دنبال کنید
         </p>
       </footer>
