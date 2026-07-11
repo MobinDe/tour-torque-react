@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
-import HomePage from "../pages/HomePage";
+
 function Navbar() {
   const [menuopen,setmenuopen]=useState(false);
 const toggleMenu = () => {

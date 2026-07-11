@@ -3,7 +3,7 @@ import React from 'react';
 
 const TurCard = ({ tour }) => {
   const {
-    id,
+    
     name,
     image,
     price,
