@@ -50,7 +50,7 @@ yarn
 ۳. اجرای پروژه در محیط توسعه:
 
 bash
-npm run dev
+npm start
 # یا
-yarn dev
+yarn start
 text
