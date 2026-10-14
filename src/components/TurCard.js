@@ -1,112 +1,141 @@
 // src/components/TurCard.jsx
-import React from 'react';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  HiOutlineLocationMarker,
+  HiOutlineOfficeBuilding,
+  HiOutlineClock,
+  HiOutlineArrowLeft,
+  HiOutlineStar,
+} from "react-icons/hi";
+
+const toPersianNum = (num) =>
+  num?.toString().replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[d]) || "";
 
 const TurCard = ({ tour }) => {
-  const {
-    
-    name,
-    image,
-    price,
-    duration,
-    location,
-    description,
-    hotel, // فیلد جدید (اختیاری)
-  } = tour;
+  const navigate = useNavigate();
+  const { id, name, image, price, duration, location, description, hotel } =
+    tour;
 
-  // فرمت قیمت با جداکننده هزارگان
-  const formattedPrice = price.toLocaleString('fa-IR');
+  const formattedPrice = toPersianNum(price.toLocaleString("en-US"));
+
+  const handleClick = () => {
+    navigate(`/tours/${id}`);
+  };
+
+  const city = location?.split("،")[0] || "ترکیه";
 
   return (
-    <div className="max-w-sm rounded-2xl overflow-hidden shadow-lg bg-white/90 backdrop-blur-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full">
-      {/* تصویر */}
-      <div className="relative h-48 overflow-hidden">
+    <div
+      onClick={handleClick}
+      dir="rtl"
+      className="
+        group relative flex flex-col cursor-pointer
+        bg-white rounded-2xl overflow-hidden
+        border border-gray-100
+        shadow-[0_4px_20px_-8px_rgba(0,0,0,0.1)]
+        hover:shadow-[0_12px_40px_-12px_rgba(251,191,36,0.3)]
+        hover:border-amber-200 hover:-translate-y-1
+        transition-all duration-300
+        h-full
+      "
+    >
+      {/* ================= تصویر ================= */}
+      <div className="relative h-44 w-full overflow-hidden bg-gray-100">
         <img
-          className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
           src={image}
           alt={name}
+          loading="lazy"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+          onError={(e) => {
+            e.target.src = "https://via.placeholder.com/400x300?text=Tour";
+          }}
         />
-        {/* نشان مدت تور */}
-        <span className="absolute top-3 left-3 bg-gray-text text-white text-xs font-bold px-2 py-1 rounded-full">
-          {duration} روزه
-        </span>
-      </div>
 
-      {/* محتوا */}
-      <div className="px-5 py-2 flex-grow">
-        {/* نام و هتل */}
-        <h3 className="font-bold text-xl text-gray-800 line-clamp-1">{name}</h3>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
+
+        {/* نشان مدت */}
+        <div className="absolute top-3 right-3 flex items-center gap-1 bg-black/60 backdrop-blur-md text-white text-[11px] font-bold px-2.5 py-1 rounded-full border border-white/20">
+          <HiOutlineClock className="w-3 h-3" />
+          {toPersianNum(duration)} روز
+        </div>
+
+        {/* برچسب VIP */}
         {hotel && (
-          <div className="flex items-center text-sm text-gray-500 mt-1">
-            <svg
-              className="w-4 h-4 mr-1"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-              />
-            </svg>
-            <span>هتل: {hotel}</span>
+          <div className="absolute top-3 left-3 flex items-center gap-1 bg-gradient-to-l from-amber-400 to-amber-500 text-white text-[10px] font-black px-2.5 py-1 rounded-full shadow-lg shadow-amber-400/30">
+            <HiOutlineStar className="w-3 h-3" />
+            VIP
           </div>
         )}
-        {/* موقعیت */}
-        <p className="text-gray-600 text-sm mt-1 flex items-center gap-1">
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-            />
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-            />
-          </svg>
-          {location}
-        </p>
-        {/* توضیحات کوتاه */}
-        <p className="text-gray-600 text-sm mt-1 line-clamp-2">{description}</p>
+
+        {/* نام شهر */}
+        <div className="absolute bottom-3 right-3">
+          <div className="flex items-center gap-1.5 bg-white/95 backdrop-blur-md text-gray-800 text-[11px] font-bold px-2.5 py-1 rounded-full shadow-md">
+            <HiOutlineLocationMarker className="w-3.5 h-3.5 text-amber-500" />
+            {city}
+          </div>
+        </div>
       </div>
 
-      {/* قیمت و دکمه */}
-      <div className="px-5 pb-2 flex justify-between items-center border-t pt-2 mt-1">
-        <div>
-          <span className="text-xs text-gray-500 block">قیمت از</span>
-          <span className="text-xl font-bold text-indigo-600">{formattedPrice}</span>
-          <span className="text-xs text-gray-500"> تومان</span>
-        </div>
-        <button className="bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2 px-4 rounded-xl transition duration-200 flex items-center gap-1">
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+      {/* ================= محتوا ================= */}
+      <div className="flex flex-col flex-grow p-4 gap-2.5">
+        <h3 className="font-black text-base text-gray-800 leading-snug line-clamp-2 min-h-[2.75rem] group-hover:text-amber-600 transition-colors">
+          {name}
+        </h3>
+
+        {hotel && (
+          <div className="flex items-center gap-1.5 text-[11px] text-gray-500 bg-amber-50/60 border border-amber-100 rounded-lg px-2.5 py-1.5">
+            <HiOutlineOfficeBuilding className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+            <span className="line-clamp-1">
+              <span className="text-gray-400">هتل:</span> {hotel}
+            </span>
+          </div>
+        )}
+
+        <p className="text-[11px] text-gray-500 leading-relaxed line-clamp-2 flex-grow">
+          {description}
+        </p>
+
+        {/* ================= قیمت و دکمه ================= */}
+        <div className="flex items-center justify-between gap-3 pt-3 mt-1 border-t border-dashed border-amber-100">
+          <div className="flex flex-col min-w-0">
+            <span className="text-[10px] text-gray-400 font-medium">
+              شروع قیمت
+            </span>
+            <div className="flex items-baseline gap-1">
+              <span className="text-base font-black text-amber-600 whitespace-nowrap">
+                {formattedPrice}
+              </span>
+              <span className="text-[10px] text-gray-500 font-medium">
+                تومان
+              </span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleClick();
+            }}
+            className="
+              shrink-0 flex items-center gap-1.5
+              bg-gradient-to-l from-amber-400 to-amber-500
+              hover:from-amber-300 hover:to-amber-400
+              text-white text-xs font-bold
+              px-3.5 py-2.5 rounded-xl
+              shadow-md shadow-amber-400/25
+              hover:shadow-lg hover:shadow-amber-400/50
+              active:scale-95 transition-all duration-200
+            "
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.5 6M17 13l1.5 6M9 21h6M12 15v6"
-            />
-          </svg>
-          رزرو
-        </button>
+            <span>رزرو</span>
+            <HiOutlineArrowLeft className="w-3.5 h-3.5" />
+          </button>
+        </div>
       </div>
+
+      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-l from-transparent via-amber-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
     </div>
   );
 };

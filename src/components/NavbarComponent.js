@@ -59,9 +59,8 @@ const toggleMenu = () => {
           </li>
         </ul>
 
-          <button className="bg-amber-500  text-emerald-900 px-4 py-2 ml-2 rounded-full font-semibold hover:bg-amber-400 transition">
-            ورود / ثبت‌نام
-          </button>
+          
+          
           {/* همبرگر (موبایل) */}
          
          <div className="md:hidden flex items-center">
